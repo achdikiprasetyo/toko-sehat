@@ -15,7 +15,21 @@
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between">
                     <span><strong>Tanggal:</strong> {{ $order->created_at->format('d-m-Y H:i:s') }}</span>
-                    <span><strong>Status:</strong> {{ ucfirst($order->status) }}</span>
+                    <span>
+                        <strong>Status:</strong>
+                        @if ($order->status === 'dikemas')
+                            <span class="badge bg-warning text-dark">Dikemas</span>
+                        @elseif ($order->status === 'dikirim')
+                            <span class="badge bg-primary">Dikirim</span>
+                        @elseif ($order->status === 'diterima')
+                            <span class="badge bg-success">Diterima</span>
+                        @elseif ($order->status === 'dibatalkan')
+                            <span class="badge bg-danger">Dibatalkan</span>
+                        @else
+                            <span class="badge bg-secondary">{{ ucfirst($order->status) }}</span>
+                        @endif
+                    </span>
+                    
                 </div>
                 <div class="card-body">
                     <ul class="list-group mb-3">
@@ -31,7 +45,7 @@
                     </ul>
                     <h5 class="text-end">Total: Rp {{ number_format($order->total, 0, ',', '.') }}</h5>
 
-                    @if ($order->status === 'pending')
+                    @if ($order->status === 'dikemas')
                         <form action="{{ route('history.cancel', $order->id) }}" method="POST"
                             onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
                             @csrf
