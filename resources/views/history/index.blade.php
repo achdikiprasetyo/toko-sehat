@@ -29,7 +29,7 @@
                             <span class="badge bg-secondary">{{ ucfirst($order->status) }}</span>
                         @endif
                     </span>
-                    
+
                 </div>
                 <div class="card-body">
                     <ul class="list-group mb-3">
@@ -52,6 +52,53 @@
                             <button type="submit" class="btn btn-danger">Batalkan Pesanan</button>
                         </form>
                     @endif
+
+                    @if ($order->status === 'diterima')
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#reviewModal{{ $order->id }}">
+                            Berikan Ulasan
+                        </button>
+                    @endif
+
+                    <!-- Modal Ulasan -->
+                    <div class="modal fade" id="reviewModal{{ $order->id }}" tabindex="-1"
+                        aria-labelledby="reviewModalLabel{{ $order->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="{{ route('review.submit') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="checkout_id" value="{{ $order->id }}">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="reviewModalLabel{{ $order->id }}">Berikan Ulasan
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="review" class="form-label">Ulasan</label>
+                                            <textarea name="review" class="form-control" rows="4" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="rating" class="form-label">Rating</label>
+                                            <select name="rating" class="form-select" required>
+                                                <option value="">Pilih Rating</option>
+                                                @for ($i = 5; $i >= 1; $i--)
+                                                    <option value="{{ $i }}">{{ $i }} Bintang
+                                                    </option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Kirim</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         @empty

@@ -110,7 +110,8 @@ Route::middleware(['auth'])->group(function () {
     # History  Checkout
     Route::get('/history', [CheckoutController::class, 'history'])->name('history.index');
     Route::post('/history/batal/{id}', [CheckoutController::class, 'cancel'])->name('history.cancel');
-    
+    Route::post('/review-submit', [CheckoutController::class, 'submit'])->name('review.submit');
+
     # Halaman toko customer
     Route::get('/toko', [SellerRequestController::class, 'toko'])->name('seller.customer');
 });

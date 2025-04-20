@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Checkout;
 use App\Models\CheckoutItem;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,25 @@ class CheckoutController extends Controller
         return view('history.index', compact('orders'));
     }
 
+    public function submit(Request $request)
+    {
+        $request->validate([
+            'checkout_id' => 'required|exists:checkouts,id',
+            'review' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        Review::create([
+            'user_id' => Auth::id(),
+            'checkout_id' => $request->checkout_id,
+            'review' => $request->review,
+            'rating' => $request->rating,
+        ]);
+
+        return redirect()->back()->with('success', 'Ulasan berhasil dikirim!');
+    }
+
+
     public function cancel($id)
     {
         // Menghapus product ketika status masih dikemas dan menghapus checkout
@@ -108,7 +128,7 @@ class CheckoutController extends Controller
     }
 
     public function print($id)
-    {   
+    {
         // Cetak pdf hasil checkout
         $checkout = Checkout::with(['items.product', 'user'])->findOrFail($id);
 

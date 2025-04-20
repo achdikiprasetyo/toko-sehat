@@ -25,7 +25,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kategori' => 'required|unique:kategori,nama_kategori'
+            'nama_kategori' => 'required|unique:categories,nama_kategori'
         ]);
 
         Category::create([
