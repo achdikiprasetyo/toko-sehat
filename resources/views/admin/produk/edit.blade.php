@@ -24,7 +24,7 @@
         </div>
 
         <div class="mb-3">
-            <label>Stock</label>
+            <label>Stok</label>
             <input type="number" name="stock" class="form-control" value="{{ old('stock', $product->stock) }}">
         </div>
 
@@ -55,7 +55,7 @@
             @endif
         </div>
 
-        <button type="submit" class="btn btn-success">Update</button>
+        <button type="submit" class="btn btn-success">Simpan Perbahan</button>
     </form>
 </div>
 @endsection

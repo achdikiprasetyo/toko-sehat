@@ -10,7 +10,7 @@
 <body>
     
         <div class="row">
-            <!-- Sidebar -->
+            {{-- Sidebar --}}
             <div class="col-md-3 col-12 bg-dark text-white p-3" style="min-height: 100vh;">
                 <h4 class="text-center mb-4">Admin Dashboard</h4>
                 <ul class="nav flex-column">
@@ -32,10 +32,8 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- Main Content Area -->
+            {{-- header --}}
             <div class="col-md-9 col-12">
-                <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center p-3">
                     <h3>Dashboard Admin</h3>
                     <div class="dropdown">
@@ -54,7 +52,7 @@
                     </div>
                 </div>
 
-                <!-- Main Dashboard Content -->
+                {{-- isi --}}
                 @yield('content')
             </div>
         </div>

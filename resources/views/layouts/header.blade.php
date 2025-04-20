@@ -27,15 +27,15 @@
                 @endguest
 
                 @auth
-                <a class="nav-link" href="{{ route('keranjang.index') }}">
-                    🛒 Keranjang
-                    @php
-                        $jumlahKeranjang = \App\Models\Cart::where('user_id', auth()->id())->count();
-                    @endphp
-                    @if ($jumlahKeranjang > 0)
-                        <span class="badge bg-danger">{{ $jumlahKeranjang }}</span>
-                    @endif
-                </a>
+                    <a class="nav-link mt-1" href="{{ route('keranjang.index') }}">
+                        🛒 Keranjang
+                        @php
+                            $jumlahKeranjang = \App\Models\Cart::where('user_id', auth()->id())->count();
+                        @endphp
+                        @if ($jumlahKeranjang > 0)
+                            <span class="badge bg-danger">{{ $jumlahKeranjang }}</span>
+                        @endif
+                    </a>
                     <div class="dropdown">
                         <a class="btn btn-light dropdown-toggle" href="#" role="button" id="userDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">

@@ -23,7 +23,6 @@
         <p><strong>No. HP:</strong> {{ $checkout->user->phone }}</p>
         <p><strong>Metode Pembayaran:</strong> {{ ucfirst($checkout->payment_method) }}</p>
         <p><strong>Tanggal Transaksi:</strong> {{ $checkout->created_at->format('d-m-Y H:i:s') }}</p>
-        <p><strong>Status:</strong> {{ ucfirst($checkout->status) }}</p>
 
         <table width="100%" border="1" cellspacing="0" cellpadding="5" style="margin-top:20px;">
             <thead>
@@ -51,7 +50,7 @@
         <div class="signature">
             <p>Hormat Kami,</p>
             <br><br>
-            <strong>Toko Online</strong>
+            <strong>Toko Sehat Online</strong>
         </div>
     </div>
 </body>

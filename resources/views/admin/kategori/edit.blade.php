@@ -18,7 +18,7 @@
             @enderror
         </div>
         <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kembali</a>
-        <button type="submit" class="btn btn-primary">Perbarui</button>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>
 </div>
 @endsection

@@ -20,10 +20,7 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-
-
         DB::beginTransaction();
-
         try {
             $user = Auth::user();
             $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
@@ -33,15 +30,16 @@ class CheckoutController extends Controller
                 $total += $item->product->harga * $item->quantity;
             }
 
-            // Simpan checkout
+            // Simpan nilai checkout dari hasil form checkout
             $checkout = Checkout::create([
                 'user_id' => $user->id,
                 'total' => $total,
-                'status' => 'dikemas'
+                'status' => 'dikemas',
+                'payment_method' => $request->payment_method
             ]);
 
             foreach ($cartItems as $item) {
-                // Kurangi stok produk
+                // Kurangi stok produk setelah checkout
                 $product = $item->product;
                 $product->stock -= $item->quantity;
                 $product->save();
@@ -55,7 +53,7 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // Kosongkan keranjang
+            // hapus keranjang setlah chechout 
             Cart::where('user_id', $user->id)->delete();
 
             DB::commit();
@@ -69,11 +67,12 @@ class CheckoutController extends Controller
 
     public function success()
     {
-        $user = Auth::user(); // Mengambil data pengguna yang sedang login
-        $checkout = Checkout::with(['user', 'items.product']) // Ambil data checkout dan relasinya
-            ->where('user_id', $user->id) // Pastikan hanya milik user yang sedang login
-            ->latest() // Ambil data checkout terbaru
-            ->first(); // Ambil yang pertama
+        $user = Auth::user();
+        // Mengambil data chechout yang terakhir kali
+        $checkout = Checkout::with(['user', 'items.product'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->first();
 
         // Jika tidak ada data checkout, redirect ke halaman keranjang
         if (!$checkout) {
@@ -85,6 +84,7 @@ class CheckoutController extends Controller
 
     public function history()
     {
+        // Mencari history chechout
         $orders = Checkout::with(['items.product'])
             ->where('user_id', Auth::id())
             ->orderByDesc('created_at')
@@ -95,22 +95,21 @@ class CheckoutController extends Controller
 
     public function cancel($id)
     {
+        // Menghapus product ketika status masih dikemas dan menghapus checkout
         $order = Checkout::where('id', $id)
             ->where('user_id', Auth::id())
             ->where('status', 'dikemas')
             ->firstOrFail();
 
-        // Hapus item-item terkait terlebih dahulu
         $order->items()->delete();
-
-        // Hapus checkout utama
         $order->delete();
 
         return redirect()->route('history.index')->with('success', 'Pesanan berhasil dibatalkan.');
     }
 
     public function print($id)
-    {
+    {   
+        // Cetak pdf hasil checkout
         $checkout = Checkout::with(['items.product', 'user'])->findOrFail($id);
 
         $pdf = Pdf::loadView('checkout.print', compact('checkout'))

@@ -7,7 +7,6 @@
 @section('content')
     <div class="container mt-4">
         <div class="row d-flex align-items-start">
-            <!-- Gambar produk -->
             <div class="col-md-4">
                 @if ($product->foto)
                     <div
@@ -20,7 +19,6 @@
                 @endif
             </div>
 
-            <!-- Detail produk -->
             <div class="col-md-8">
                 <h2 class="mb-3">{{ $product->nama_produk }}</h2>
                 <p><strong>Deskripsi:</strong> {{ $product->deskripsi }}</p>

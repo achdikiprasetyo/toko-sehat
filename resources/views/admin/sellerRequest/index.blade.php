@@ -1,10 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Seller Requests')
+@section('title')
+    Permohonan Buka Toko
+@endsection
 
 @section('content')
     <div class="container mt-4">
-        <h3>Seller Requests</h3>
+        <h3>Permohonan Pembukaan Toko</h3>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,8 +17,8 @@
                 <tr>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>Request Status</th>
-                    <th>Actions</th>
+                    <th>Status Permohonan</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,15 +40,15 @@
                                 <form action="{{ route('sellerRequests.approve', $request->id) }}" method="POST"
                                     class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Terima</button>
                                 </form>
                                 <form action="{{ route('sellerRequests.reject', $request->id) }}" method="POST"
                                     class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
                                 </form>
                             @else
-                                <button class="btn btn-sm btn-success" disabled>Approved</button>
+                                <button class="btn btn-sm btn-success" disabled>Sudah Diterima</button>
                             @endif
                         </td>
                     </tr>

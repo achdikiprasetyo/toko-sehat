@@ -10,7 +10,7 @@
 
         @if ($carts->isEmpty())
             <div class="alert alert-info">
-                Keranjang kamu kosong 😅
+                Keranjang kamu kosong 
             </div>
         @else
             <table class="table table-bordered mt-3">

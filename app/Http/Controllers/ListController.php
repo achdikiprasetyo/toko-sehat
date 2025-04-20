@@ -26,9 +26,11 @@ class ListController extends Controller
         $products = Product::where('kategori_id', $id)->get();
         // Ambil semua kategori
         $categories = Category::all();
+
+        $selectedCategory = Category::findOrFail($id);
     
         // Kirimkan data produk dan kategori ke view
-        return view('product.list', compact('products', 'categories'));
+        return view('product.list', compact('products', 'categories', 'selectedCategory'));
     }
 
     // Menampilkan detail produk

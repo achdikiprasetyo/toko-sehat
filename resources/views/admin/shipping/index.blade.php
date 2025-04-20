@@ -1,21 +1,23 @@
 @extends('layouts.admin')
 
-@section('title', 'Shipping Management')
+@section('title')
+    Pengiriman Produk
+@endsection
 
 @section('content')
     <div class="container mt-4">
-        <h3>Shipping Management</h3>
+        <h3>Manajemen Pengiriman Produk</h3>
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Customer</th>
-                    <th>Products</th>
+                    <th>Nama Customer</th>
+                    <th>Produk</th>
                     <th>Total</th>
                     <th>Status</th>
-                    <th>Change Status</th>
+                    <th>Ubah Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,12 +38,12 @@
                                 <form action="{{ route('admin.shipping.update', $order->id) }}" method="POST">
                                     @csrf
                                     <select name="status" class="form-select form-select-sm mb-2">
-                                        <option value="dikemas" {{ $order->status === 'dikemas' ? 'selected' : '' }}>dikemas
+                                        <option value="dikemas" {{ $order->status === 'dikemas' ? 'selected' : '' }}>Dikemas
                                         </option>
-                                        <option value="dikirim" {{ $order->status === 'dikirim' ? 'selected' : '' }}>dikirim
+                                        <option value="dikirim" {{ $order->status === 'dikirim' ? 'selected' : '' }}>Dikirim
                                         </option>
                                         <option value="diterima" {{ $order->status === 'diterima' ? 'selected' : '' }}>
-                                            diterima</option>
+                                            Diterima</option>
                                     </select>
                                     <button class="btn btn-sm btn-success">Update</button>
                                 </form>

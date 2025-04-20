@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('titile')
+    Daftar Produk
+@endsection
+
 @section('content')
 <div class="container">
     <h1>Daftar Produk</h1>

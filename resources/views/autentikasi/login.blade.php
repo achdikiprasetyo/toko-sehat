@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Masuk Toko Sehat
+    Masuk Toko Sehat Online
 @endsection
 
 @section('content')

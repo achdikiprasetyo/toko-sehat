@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('titile')
+    Toko Saya
+@endsection
+
 @section('content')
 <div class="container mt-4">
     <h2>Toko Saya</h2>
@@ -14,9 +18,8 @@
         </form>
     @else
         <div class="alert alert-success">
-            Selamat! Anda adalah seller. 🎉
+            Selamat! Anda adalah seller. 
         </div>
-        <!-- Tampilkan konten toko seller di sini -->
     @endif
 </div>
 @endsection
