@@ -24,7 +24,7 @@ class CheckoutController extends Controller
     public function process(Request $request)
     {
         DB::beginTransaction();
-        try {  
+        try {
             $user = Auth::user();
             $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
 
@@ -92,7 +92,8 @@ class CheckoutController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        return view('history.index', compact('orders'));
+        $reviewedCheckoutIds = Review::where('user_id', Auth::id())->pluck('checkout_id')->toArray();
+        return view('history.index', compact('orders', 'reviewedCheckoutIds'));
     }
 
     // Kirim ulasan
@@ -117,15 +118,34 @@ class CheckoutController extends Controller
     // Pembatalan order
     public function cancel($id)
     {
-        $order = Checkout::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->where('status', 'dikemas')
-            ->firstOrFail();
-        $order->items()->delete();
-        $order->delete();
+        DB::beginTransaction();
+        try {
+            $order = Checkout::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->where('status', 'dikemas') // Hanya bisa cancel saat status dikemas
+                ->with('items.product') // Include produk
+                ->firstOrFail();
 
-        return redirect()->route('history.index')->with('success', 'Pesanan berhasil dibatalkan.');
+            // Kembalikan stok produk
+            foreach ($order->items as $item) {
+                $product = $item->product;
+                $product->stock += $item->quantity;
+                $product->save();
+            }
+
+            // Hapus item dan order
+            $order->items()->delete();
+            $order->delete();
+
+            DB::commit();
+
+            return redirect()->route('history.index')->with('success', 'Pesanan berhasil dibatalkan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal membatalkan pesanan: ' . $e->getMessage());
+        }
     }
+
 
     // Cetak pdf histoy pembelian
     public function print($id)

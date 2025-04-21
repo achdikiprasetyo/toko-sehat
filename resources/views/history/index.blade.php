@@ -54,10 +54,14 @@
                     @endif
 
                     @if ($order->status === 'diterima')
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#reviewModal{{ $order->id }}">
-                            Berikan Ulasan
-                        </button>
+                        @if (in_array($order->id, $reviewedCheckoutIds))
+                            <span class="badge bg-success">Sudah diulas</span>
+                        @else
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#reviewModal{{ $order->id }}">
+                                Berikan Ulasan
+                            </button>
+                        @endif
                     @endif
 
                     <!-- Modal Ulasan -->

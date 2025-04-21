@@ -19,14 +19,30 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
+            'username' => 'required|unique:users,username',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6',
             'dob' => 'required|date',
             'gender' => 'required|in:L,P',
             'address' => 'required',
             'city' => 'required',
             'phone' => 'required',
+        ], [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'password.required' => 'Password wajib diisi.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'password.min' => 'Password minimal 6 karakter.',
+            'dob.required' => 'Tanggal lahir wajib diisi.',
+            'dob.date' => 'Format tanggal tidak valid.',
+            'gender.required' => 'Jenis kelamin wajib diisi.',
+            'gender.in' => 'Jenis kelamin harus L atau P.',
+            'address.required' => 'Alamat wajib diisi.',
+            'city.required' => 'Kota wajib diisi.',
+            'phone.required' => 'Nomor telepon wajib diisi.',
         ]);
 
         User::create([
