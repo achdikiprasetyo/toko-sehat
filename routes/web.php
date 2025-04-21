@@ -49,12 +49,16 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-// Halaman yang harus login 
-Route::middleware(['auth'])->group(function () {
-    # Admin Dashboard
+Route::middleware(['admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
+});
+
+// Halaman yang harus login 
+Route::middleware(['auth'])->group(function () {
+    # Admin Dashboard
+
 
     # CRUD Kategori
     Route::get('admin/kategori', [CategoryController::class, 'index'])->name('kategori.index');

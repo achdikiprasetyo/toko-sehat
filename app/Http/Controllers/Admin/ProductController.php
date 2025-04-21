@@ -9,19 +9,22 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
-{
+{   
+    // Menampilkan semua produk
     public function index()
     {
         $products = Product::all();
         return view('admin.produk.index', compact('products'));
     }
 
+    // Form pembuatan produk
     public function create()
     {
         $categories = Category::all();
         return view('admin.produk.create', compact('categories'));
     }
 
+    // Simpan 
     public function store(Request $request)
     {
         $request->validate([
@@ -44,17 +47,18 @@ class ProductController extends Controller
         
         Product::create($data);
         
-
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
+    // Menampilkan form edit
     public function edit($id)
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
         return view('admin.produk.edit', compact('product', 'categories'));
     }
-
+    
+    // Edit 
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -65,14 +69,13 @@ class ProductController extends Controller
             'stock' => 'required|integer',
             'deskripsi' => 'nullable|string',
             'kategori_id' => 'required|exists:categories,id',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $data = $request->except('foto');
 
-        // Cek jika ada upload foto baru
+        // Upload foto jika ada
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
             if ($product->foto && file_exists(public_path('uploads/' . $product->foto))) {
                 unlink(public_path('uploads/' . $product->foto));
             }
@@ -87,11 +90,11 @@ class ProductController extends Controller
         return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
+    // Hapus produk
     public function destroy($id)
-    {
+    {   
+        // Menghapus produk
         $product = Product::findOrFail($id);
-
-        // Hapus foto dari folder jika ada
         if ($product->foto && file_exists(public_path('uploads/' . $product->foto))) {
             unlink(public_path('uploads/' . $product->foto));
         }

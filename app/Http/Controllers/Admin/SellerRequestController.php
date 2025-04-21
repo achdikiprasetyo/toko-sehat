@@ -9,13 +9,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SellerRequestController extends Controller
-{
+{   
+    // Menampilkan halaman admin pembukaan toko
     public function index()
     {
         $requests = SellerRequest::with('user')->get();
         return view('admin.sellerRequest.index', compact('requests'));
     }
-
+    
+    // Menyimpan pembukaan toko
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -33,27 +35,29 @@ class SellerRequestController extends Controller
         return back()->with('success', 'Permintaan menjadi seller telah dikirim.');
     }
 
+    // Ubah role jika disetujui
     public function approve($id)
     {
         $request = SellerRequest::findOrFail($id);
         $request->status = 'approved';
         $request->save();
 
-        // Update role user menjadi seller
+        // Update role 
         $user = $request->user;
         $user->role = 'seller';
         $user->save();
 
-        return redirect()->route('sellerRequests.index')->with('success', 'Seller request approved.');
+        return redirect()->route('sellerRequests.index')->with('success', 'Permintaan pembukaan toko disetujui');
     }
 
+    // Menolak pembuatan toko
     public function reject($id)
     {
         $request = SellerRequest::findOrFail($id);
         $request->status = 'rejected';
         $request->save();
 
-        return redirect()->route('sellerRequests.index')->with('success', 'Seller request rejected.');
+        return redirect()->route('sellerRequests.index')->with('success', 'Permintaan pembukaan toko ditolak');
     }
 
     public function toko()
