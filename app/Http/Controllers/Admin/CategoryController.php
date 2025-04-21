@@ -44,7 +44,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $categorys)
     {
         $request->validate([
-            'nama_kategori' => 'required|unique:kategori,nama_kategori,' . $categorys->id
+            'nama_kategori' => 'required|unique:categories,nama_kategori,' . $categorys->id
         ]);
 
         $categorys->update([

@@ -47,7 +47,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->save();
 
-        return redirect()->route('customer.index')->with('success', 'User created successfully');
+        return redirect()->route('customer.index')->with('success', 'Pembuatan Akun Berhasil');
     }
 
     // Form edit
@@ -81,13 +81,13 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->save();
 
-        return redirect()->route('customer.index')->with('success', 'User updated successfully');
+        return redirect()->route('customer.index')->with('success', 'Berhasil Memperbarui Akun');
     }
 
     // Hapus user
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('customer.index')->with('success', 'User deleted successfully');
+        return redirect()->route('customer.index')->with('success', 'Akun berhasil di hapus');
     }
 }

@@ -50,7 +50,6 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-
 // Halaman yang hanya bisa diakses Admin
 Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/admin/dashboard', function () {

@@ -37,7 +37,7 @@
                 <td>{{ $product->nama_produk }}</td>
                 <td>Rp{{ number_format($product->harga) }}</td>
                 <td>{{ $product->stock }}</td>
-                <td>{{ $product->categorys->nama_kategori ?? '-' }}</td>
+                <td>{{ $product->category->nama_kategori ?? '-' }}</td>
                 <td>
                     <a href="{{ route('produk.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     <form action="{{ route('produk.destroy', $product->id) }}" method="POST" style="display:inline-block;">
