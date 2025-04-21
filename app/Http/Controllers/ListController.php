@@ -8,58 +8,49 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ListController extends Controller
-{
+{   
+    // Menampilkan semua produk dan kategori
     public function index()
     {
-        // Ambil semua produk beserta kategori
         $products = Product::with('category')->latest()->get();
-        // Ambil semua kategori
         $categories = Category::all();
-    
-        // Kirimkan data produk dan kategori ke view
+
         return view('product.list', compact('products', 'categories'));
     }
     
+    // Filter produk berdasarkan kategori
     public function produkByKategori($id)
     {
-        // Ambil produk berdasarkan kategori
         $products = Product::where('kategori_id', $id)->get();
-        // Ambil semua kategori
         $categories = Category::all();
-
         $selectedCategory = Category::findOrFail($id);
-    
-        // Kirimkan data produk dan kategori ke view
+ 
         return view('product.list', compact('products', 'categories', 'selectedCategory'));
     }
 
-    // Menampilkan detail produk
+    // Menampilkan info lengkap produk
     public function show($id)
     {
-        // Ambil produk berdasarkan ID
         $product = Product::findOrFail($id);
 
         return view('product.view', compact('product'));
     }
 
+    // Tambah produk ke keranjang
     public function addToCart(Request $request)
     {
-        // Cek apakah user sudah login
         if (Auth::check()) {
             $user = Auth::user();
             $product = Product::findOrFail($request->product_id);
 
-            // Cek apakah produk sudah ada di keranjang
             $existingCart = Cart::where('user_id', $user->id)
                 ->where('product_id', $product->id)
                 ->first();
 
             if ($existingCart) {
-                // Jika ada, update quantity
                 $existingCart->quantity += $request->quantity;
                 $existingCart->save();
             } else {
-                // Jika belum ada, buat item baru di keranjang
                 Cart::create([
                     'user_id' => $user->id,
                     'product_id' => $product->id,
@@ -70,11 +61,10 @@ class ListController extends Controller
             return redirect()->route('keranjang.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
         }
 
-        // Jika user belum login
         return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
     }
 
-
+    // Menampilkan isi keranjang
     public function viewCart()
     {
         $user = Auth::user();

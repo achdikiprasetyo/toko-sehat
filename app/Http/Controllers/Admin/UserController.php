@@ -8,18 +8,21 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
-{
+{   
+    // Menampilkan semua akun customer
     public function index()
     {
         $users = User::all();
         return view('admin.customer.index', compact('users'));
     }
 
+    // Form tambah user
     public function create()
     {
         return view('admin.customer.create');
     }
 
+    // Simpan data
     public function store(Request $request)
     {
         $request->validate([
@@ -47,11 +50,13 @@ class UserController extends Controller
         return redirect()->route('customer.index')->with('success', 'User created successfully');
     }
 
+    // Form edit
     public function edit(User $user)
     {
         return view('admin.customer.edit', compact('user'));
     }
 
+    // Edit data user
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -79,6 +84,7 @@ class UserController extends Controller
         return redirect()->route('customer.index')->with('success', 'User updated successfully');
     }
 
+    // Hapus user
     public function destroy(User $user)
     {
         $user->delete();

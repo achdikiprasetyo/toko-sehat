@@ -13,6 +13,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\SellerRequestController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Middleware\AdminMiddleware;
 
 // Halaman yang bisa di lihat guest//
 # Beranda
@@ -49,16 +50,12 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::middleware(['admin'])->group(function () {
+
+// Halaman yang hanya bisa diakses Admin
+Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
-});
-
-// Halaman yang harus login 
-Route::middleware(['auth'])->group(function () {
-    # Admin Dashboard
-
 
     # CRUD Kategori
     Route::get('admin/kategori', [CategoryController::class, 'index'])->name('kategori.index');
@@ -94,13 +91,22 @@ Route::middleware(['auth'])->group(function () {
     Route::post('permohonan-toko/{id}/reject', [SellerRequestController::class, 'reject'])->name('sellerRequests.reject');
     Route::post('/permohonon-toko', [SellerRequestController::class, 'store'])->name('seller.request');
 
+    # Ulasan Customer
+    Route::get('/reviews', [ReviewController::class, 'index'])->name('ulasan.index');
+    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('ulasan.destroy');
+});
+
+
+// Halaman yang harus login 
+Route::middleware(['auth'])->group(function () {
+
     # Customer
     # Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     # Tampilan Produk yang haya bisa dilihat customer yang sudah login
     Route::get('/produk/{id}', [ListController::class, 'show'])->name('produk.show');
-    
+
     # Keranjang
     Route::post('/keranjang/add', [ListController::class, 'addToCart'])->name('cart.add');
     Route::get('/keranjang', [ListController::class, 'viewCart'])->name('keranjang.index');
@@ -111,7 +117,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/berhasil', [CheckoutController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/{id}/print', [CheckoutController::class, 'print'])->name('checkout.print');
-    
+
     # History  Checkout
     Route::get('/history', [CheckoutController::class, 'history'])->name('history.index');
     Route::post('/history/batal/{id}', [CheckoutController::class, 'cancel'])->name('history.cancel');
@@ -119,9 +125,4 @@ Route::middleware(['auth'])->group(function () {
 
     # Halaman toko customer
     Route::get('/toko', [SellerRequestController::class, 'toko'])->name('seller.customer');
-
-    # Ulasan Customer
-    Route::get('/reviews', [ReviewController::class, 'index'])->name('ulasan.index');
-    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('ulasan.destroy');
-
 });

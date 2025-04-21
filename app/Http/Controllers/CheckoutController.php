@@ -13,12 +13,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class CheckoutController extends Controller
 {
+    // Menampilkan keranjang
     public function index()
     {
         $cartItems = Cart::with('product')->where('user_id', Auth::id())->get();
         return view('checkout.index', compact('cartItems'));
     }
 
+    // Menyimpan item keranjang di checkout
     public function process(Request $request)
     {
         DB::beginTransaction();
@@ -31,7 +33,6 @@ class CheckoutController extends Controller
                 $total += $item->product->harga * $item->quantity;
             }
 
-            // Simpan nilai checkout dari hasil form checkout
             $checkout = Checkout::create([
                 'user_id' => $user->id,
                 'total' => $total,
@@ -40,7 +41,7 @@ class CheckoutController extends Controller
             ]);
 
             foreach ($cartItems as $item) {
-                // Kurangi stok produk setelah checkout
+                // Kurangi stok 
                 $product = $item->product;
                 $product->stock -= $item->quantity;
                 $product->save();
@@ -54,7 +55,6 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // hapus keranjang setlah chechout 
             Cart::where('user_id', $user->id)->delete();
 
             DB::commit();
@@ -66,6 +66,7 @@ class CheckoutController extends Controller
         }
     }
 
+    // Menampilkan hasil checkout
     public function success()
     {
         $user = Auth::user();
@@ -83,9 +84,9 @@ class CheckoutController extends Controller
         return view('checkout.success', compact('checkout'));
     }
 
+    // History pembelian user
     public function history()
     {
-        // Mencari history chechout
         $orders = Checkout::with(['items.product'])
             ->where('user_id', Auth::id())
             ->orderByDesc('created_at')
@@ -94,6 +95,7 @@ class CheckoutController extends Controller
         return view('history.index', compact('orders'));
     }
 
+    // Kirim ulasan
     public function submit(Request $request)
     {
         $request->validate([
@@ -112,24 +114,22 @@ class CheckoutController extends Controller
         return redirect()->back()->with('success', 'Ulasan berhasil dikirim!');
     }
 
-
+    // Pembatalan order
     public function cancel($id)
     {
-        // Menghapus product ketika status masih dikemas dan menghapus checkout
         $order = Checkout::where('id', $id)
             ->where('user_id', Auth::id())
             ->where('status', 'dikemas')
             ->firstOrFail();
-
         $order->items()->delete();
         $order->delete();
 
         return redirect()->route('history.index')->with('success', 'Pesanan berhasil dibatalkan.');
     }
 
+    // Cetak pdf histoy pembelian
     public function print($id)
     {
-        // Cetak pdf hasil checkout
         $checkout = Checkout::with(['items.product', 'user'])->findOrFail($id);
 
         $pdf = Pdf::loadView('checkout.print', compact('checkout'))
