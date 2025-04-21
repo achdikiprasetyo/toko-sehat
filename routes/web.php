@@ -12,6 +12,7 @@ use App\Http\Controllers\ListController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\SellerRequestController;
+use App\Http\Controllers\Admin\ReviewController;
 
 // Halaman yang bisa di lihat guest//
 # Beranda
@@ -75,8 +76,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin/customer', [UserController::class, 'index'])->name('customer.index');
     Route::get('admin/customer/create', [UserController::class, 'create'])->name('customer.create');
     Route::post('admin/customer', [UserController::class, 'store'])->name('customer.store');
-    Route::get('admin/customer/{id}/edit', [UserController::class, 'edit'])->name('customer.edit');
-    Route::put('admin/customer/{id}', [UserController::class, 'update'])->name('customer.update');
+    Route::get('admin/customer/{user}/edit', [UserController::class, 'edit'])->name('customer.edit');
+    Route::put('admin/customer/{user}', [UserController::class, 'update'])->name('customer.update');
     Route::delete('admin/customer/{id}', [UserController::class, 'destroy'])->name('customer.destroy');
 
     # Proses Pengiriman Barang
@@ -115,7 +116,8 @@ Route::middleware(['auth'])->group(function () {
     # Halaman toko customer
     Route::get('/toko', [SellerRequestController::class, 'toko'])->name('seller.customer');
 
-    Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('ulasan.index');
-    Route::delete('/reviews/{id}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('ulasan.destroy');
+    # Ulasan Customer
+    Route::get('/reviews', [ReviewController::class, 'index'])->name('ulasan.index');
+    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('ulasan.destroy');
 
 });
