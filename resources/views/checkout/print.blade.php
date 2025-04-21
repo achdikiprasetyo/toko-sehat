@@ -36,7 +36,7 @@
             <tbody>
                 @foreach ($checkout->items as $item)
                     <tr>
-                        <td>{{ $item->product->nama_produk }}</td>
+                        <td>{{ $item->product->nama_produk }}-{{$item->product->id}}</td>
                         <td>{{ $item->quantity }}</td>
                         <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>

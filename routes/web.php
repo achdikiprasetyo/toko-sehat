@@ -114,4 +114,8 @@ Route::middleware(['auth'])->group(function () {
 
     # Halaman toko customer
     Route::get('/toko', [SellerRequestController::class, 'toko'])->name('seller.customer');
+
+    Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('ulasan.index');
+    Route::delete('/reviews/{id}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('ulasan.destroy');
+
 });

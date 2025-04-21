@@ -10,7 +10,11 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('welcome') }}"><strong>Toko Sehat Online</strong></a>
+            <a class="navbar-brand" href="{{ route('welcome') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                    style="width: 50px; height: 50px; margin-right: 10px;">
+                <strong>Toko Sehat Online</strong>
+            </a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('welcome') }}">Beranda</a>

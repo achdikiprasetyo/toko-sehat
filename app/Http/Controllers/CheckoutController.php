@@ -22,7 +22,7 @@ class CheckoutController extends Controller
     public function process(Request $request)
     {
         DB::beginTransaction();
-        try {
+        try {  
             $user = Auth::user();
             $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
 

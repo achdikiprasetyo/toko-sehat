@@ -5,49 +5,61 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        <h1>Checkout</h1>
+    <div class="container mt-5">
+        <h3 class="fw-bold mb-4">🧾 Checkout</h3>
 
         <form action="{{ route('checkout.process') }}" method="POST">
             @csrf
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Produk</th>
-                        <th>Jumlah</th>
-                        <th>Harga</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $total = 0; @endphp
-                    @foreach ($cartItems as $item)
-                        @php
-                            $subtotal = $item->quantity * $item->product->harga;
-                            $total += $subtotal;
-                        @endphp
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
                         <tr>
-                            <td>{{ $item->product->nama_produk }}</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td>Rp {{ number_format($item->product->harga) }}</td>
-                            <td>Rp {{ number_format($subtotal) }}</td>
+                            <th>Produk</th>
+                            <th>Jumlah</th>
+                            <th>Harga Satuan</th>
+                            <th>Subtotal</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @php $total = 0; @endphp
+                        @foreach ($cartItems as $item)
+                            @php
+                                $subtotal = $item->quantity * $item->product->harga;
+                                $total += $subtotal;
+                            @endphp
+                            <tr>
+                                <td>
+                                    <strong>{{ $item->product->nama_produk }}-{{ $item->product->id }}</strong><br>
+                                </td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>Rp {{ number_format($item->product->harga, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                        <tr class="fw-bold">
+                            <td colspan="3" class="text-end">Total</td>
+                            <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <h4>Total: Rp {{ number_format($total) }}</h4>
-
-            <div class="form-group mt-3">
-                <label>Pilih Metode Pembayaran:</label><br>
-                <select name="payment_method" class="form-control">
+            <div class="mt-4">
+                <label for="payment_method" class="form-label fw-semibold">Pilih Metode Pembayaran:</label>
+                <select name="payment_method" id="payment_method" class="form-select w-50" required>
+                    <option value="" disabled selected>-- Pilih Metode --</option>
                     <option value="paypal">PayPal</option>
                     <option value="debit">Debit</option>
-                    <option value="cod">COD</option>
+                    <option value="cod">Cash on Delivery</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-success mt-3">Checkout</button>
+            <div class="mt-4 text-start">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <i class="bi bi-cart-check"></i> Proses Checkout
+                </button>
+            </div>
         </form>
     </div>
 @endsection

@@ -15,20 +15,23 @@
                 <h4 class="text-center mb-4">Admin Dashboard</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route ('produk.index') }}">Manajemen Produk</a>
+                        <a class="nav-link text-white" href="{{ route ('produk.index') }}">Produk</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('kategori.index') }}">Manajemen Kategori</a>
+                        <a class="nav-link text-white" href="{{ route('kategori.index') }}">Kategori Produk</a>
 
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('customer.index') }}">Manajemen Customer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('admin.shipping') }}">Pengiriman</a>
+                        <a class="nav-link text-white" href="{{ route('admin.shipping') }}">Pengiriman Produk</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('sellerRequests.index') }}">Pembukaan Toko</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('ulasan.index') }}">Ulasan Customer</a>
                     </li>
                 </ul>
             </div>
@@ -42,7 +45,7 @@
                             👤 {{ Auth::user()->username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="{{ route('profile') }}">Detail Profil</a></li>
+                            {{-- <li><a class="dropdown-item" href="{{ route('profile') }}">Detail Profil</a></li> --}}
                             <li>
                                 <form action="{{ route('logout') }}" method="GET" class="d-inline">
                                     <button type="submit" class="dropdown-item text-danger">Logout</button>

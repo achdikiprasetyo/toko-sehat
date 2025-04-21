@@ -5,39 +5,50 @@
 @endsection
 
 @section('content')
-    <div class="container mt-4">
-        <div class="row d-flex align-items-start">
-            <div class="col-md-4">
-                @if ($product->foto)
-                    <div
-                        style="width: 100%; padding-top: 100%; position: relative; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <img src="{{ asset('uploads/' . $product->foto) }}" alt="{{ $product->nama_produk }}"
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
-                    </div>
-                @else
-                    <div class="text-muted">Tidak ada gambar</div>
-                @endif
+    <div class="container mt-5">
+        <div class="row g-4">
+            {{-- Gambar Produk --}}
+            <div class="col-md-5">
+                <div class="border rounded shadow-sm p-2 bg-white">
+                    @if ($product->foto)
+                        <img src="{{ asset('uploads/' . $product->foto) }}" class="img-fluid rounded" style="object-fit: cover; width: 100%; height: 400px;" alt="{{ $product->nama_produk }}">
+                    @else
+                        <div class="text-center text-muted py-5">Tidak ada gambar</div>
+                    @endif
+                </div>
             </div>
 
-            <div class="col-md-8">
-                <h2 class="mb-3">{{ $product->nama_produk }}</h2>
-                <p><strong>Deskripsi:</strong> {{ $product->deskripsi }}</p>
-                <p><strong>Harga:</strong> Rp{{ number_format($product->harga) }}</p>
-                <p><strong>Kategori:</strong> {{ $product->categorys->nama_kategori ?? '-' }}</p>
-                <p><strong>Stok:</strong> {{ $product->stock }}</p>
+            {{-- Detail Produk --}}
+            <div class="col-md-7">
+                <h3 class="fw-bold">{{ $product->nama_produk }}</h3>
 
-                <div class="mt-4">
-                    <form action="{{ route('cart.add') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <p class="text-muted mt-2"><i class="bi bi-tag"></i> <strong>Kategori:</strong> {{ $product->category->nama_kategori ?? '-' }}</p>
 
-                        <label for="quantity" class="form-label"><strong>Jumlah Beli</strong></label>
+                <h4 class="text-danger fw-bold mb-3">Rp{{ number_format($product->harga) }}</h4>
+
+                <p>{{ $product->deskripsi }}</p>
+
+                <p><strong>Stok Tersedia:</strong> {{ $product->stock }}</p>
+
+                {{-- Form Beli --}}
+                <form action="{{ route('cart.add') }}" method="POST" class="mt-4">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                    <div class="d-flex align-items-center mb-3">
+                        <label for="quantity" class="me-2 mb-0"><strong>Jumlah:</strong></label>
                         <input type="number" id="quantity" name="quantity" value="1" min="1"
-                            max="{{ $product->stock }}" class="form-control w-25 mb-2" required>
+                            max="{{ $product->stock }}" class="form-control w-25" required>
+                    </div>
 
-                        <button type="submit" class="btn btn-success">Beli Sekarang</button>
-                    </form>
-                </div>
+                    <button type="submit" class="btn btn-success me-2">
+                        <i class="bi bi-cart-plus"></i> Tambahkan ke Keranjang
+                    </button>
+
+                    <a href="{{ route('produk.list') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Kembali
+                    </a>
+                </form>
             </div>
         </div>
     </div>
