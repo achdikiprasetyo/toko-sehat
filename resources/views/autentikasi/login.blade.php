@@ -13,15 +13,11 @@
     @endif
 
     <div class="container mt-5" style="max-width: 400px;">
-        <!-- Logo -->
         <h2 class="text-center mb-4">Login</h2>
         <div class="text-center mb-4">
             <img src="{{ asset('images/logo.png') }}" alt="Logo Toko Sehat Online" class="img-fluid" style="max-height: 100px;">
         </div>
 
-        
-
-        {{-- Validasi Error --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <strong>Terjadi kesalahan!</strong>
@@ -33,7 +29,6 @@
             </div>
         @endif
 
-        {{-- Form Login --}}
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
             <div class="mb-3">

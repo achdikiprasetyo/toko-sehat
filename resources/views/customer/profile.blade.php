@@ -16,8 +16,7 @@
                 <p><strong>Alamat:</strong> {{ $user->address }}</p>
                 <p><strong>Kota:</strong> {{ $user->city }}</p>
                 <p><strong>Nomor HP:</strong> {{ $user->phone }}</p>
-                <p><strong>Role:</strong> {{ ucfirst($user->role) }}</p>
-                <p>s</p>
+                {{-- <p><strong>Role:</strong> {{ ucfirst($user->role) }}</p> --}}
             </div>
         </div>
     </div>

@@ -34,18 +34,28 @@
                 </tr>
             </thead>
             <tbody>
+                @php $subtotal = 0; @endphp
                 @foreach ($checkout->items as $item)
+                    @php
+                        $itemSubtotal = $item->price * $item->quantity;
+                        $subtotal += $itemSubtotal;
+                    @endphp
                     <tr>
-                        <td>{{ $item->product->nama_produk }}-{{$item->product->id}}</td>
+                        <td>{{ $item->product->nama_produk }} - {{ $item->product->id }}</td>
                         <td>{{ $item->quantity }}</td>
                         <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($itemSubtotal, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <h3 class="text-right" style="margin-top: 20px;">Total: Rp {{ number_format($checkout->total, 0, ',', '.') }}</h3>
+        {{-- Ringkasan Harga --}}
+        <div style="margin-top: 20px;">
+            <h4 class="text-right">Subtotal: Rp {{ number_format($subtotal, 0, ',', '.') }}</h4>
+            <h4 class="text-right">Ongkir: Rp {{ number_format($checkout->ongkir, 0, ',', '.') }}</h4>
+            <h3 class="text-right">Total Bayar: Rp {{ number_format($checkout->total, 0, ',', '.') }}</h3>
+        </div>
 
         <div class="signature">
             <p>Hormat Kami,</p>

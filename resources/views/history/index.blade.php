@@ -43,6 +43,7 @@
                             </li>
                         @endforeach
                     </ul>
+                    <h6 class="text-end">Ongkir: Rp {{ number_format($order->ongkir, 0, ',', '.') }}</h6>
                     <h5 class="text-end">Total: Rp {{ number_format($order->total, 0, ',', '.') }}</h5>
 
                     @if ($order->status === 'dikemas')

@@ -88,7 +88,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('permohonan-toko', [SellerRequestController::class, 'index'])->name('sellerRequests.index');
     Route::post('permohonan-toko/{id}/approve', [SellerRequestController::class, 'approve'])->name('sellerRequests.approve');
     Route::post('permohonan-toko/{id}/reject', [SellerRequestController::class, 'reject'])->name('sellerRequests.reject');
-    Route::post('/permohonon-toko', [SellerRequestController::class, 'store'])->name('seller.request');
+
 
     # Ulasan Customer
     Route::get('/reviews', [ReviewController::class, 'index'])->name('ulasan.index');
@@ -124,4 +124,7 @@ Route::middleware(['auth'])->group(function () {
 
     # Halaman toko customer
     Route::get('/toko', [SellerRequestController::class, 'toko'])->name('seller.customer');
+
+    # Pembukaan Toko Customer
+    Route::post('/permohonon-toko', [SellerRequestController::class, 'store'])->name('seller.request');
 });

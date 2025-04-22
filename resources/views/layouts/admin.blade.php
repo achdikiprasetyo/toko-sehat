@@ -67,6 +67,8 @@
                 <div class="mt-4">
                     @yield('content')
                 </div>
+
+                {{-- @include('layouts.footer') --}}
             </main>
         </div>
     </div>

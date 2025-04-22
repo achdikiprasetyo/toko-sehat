@@ -33,9 +33,13 @@ class CheckoutController extends Controller
                 $total += $item->product->harga * $item->quantity;
             }
 
+            $ongkir = $request->ongkir ?? 0;
+            $grandTotal = $total + $ongkir;
+
             $checkout = Checkout::create([
                 'user_id' => $user->id,
-                'total' => $total,
+                'total' => $grandTotal, // total + ongkir
+                'ongkir' => $ongkir,
                 'status' => 'dikemas',
                 'payment_method' => $request->payment_method
             ]);
@@ -55,14 +59,14 @@ class CheckoutController extends Controller
                 ]);
             }
 
+            // Hapus keranjang setelah checkout berhasil
             Cart::where('user_id', $user->id)->delete();
 
             DB::commit();
-
             return redirect()->route('checkout.success')->with('success', 'Checkout berhasil!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Checkout gagal: ' . $e->getMessage());
+            return back()->with('error', 'Checkout gagal: ' . $e->getMessage());
         }
     }
 
